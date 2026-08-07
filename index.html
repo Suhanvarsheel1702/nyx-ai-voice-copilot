@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nyx — AI Voice Co-Pilot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">Ny<span>x</span></div>
+      <p>Voice copilot for inside sales</p>
+      <nav aria-label="Workspace navigation">
+        <button class="nav-item active" data-view="live">Live call assist</button>
+        <button class="nav-item" data-view="reviews">Call reviews</button>
+        <button class="nav-item" data-view="followups">Follow-ups</button>
+        <button class="nav-item" data-view="knowledge">Knowledge base</button>
+        <button class="nav-item" data-view="activity">CRM activity</button>
+        <button class="nav-item" data-view="workflow">AI workflow</button>
+      </nav>
+    </aside>
+
+    <main>
+      <header>
+        <div><span class="eyebrow">Pay-in-3 affordability product</span><h1>Make every sales conversation count.</h1><p>Real-time, compliant, human-led guidance.</p></div>
+        <span class="status">● Demo call active</span>
+      </header>
+
+      <section id="live" class="view active">
+        <div class="notice"><b>Consent safeguard:</b> inform the customer before recording or AI assistance begins. This demo uses synthetic data only.</div>
+        <div class="two-columns">
+          <article class="card"><h2>Live conversation</h2><div id="transcript" class="transcript"><p class="agent"><b>Sales agent</b> Before we continue, this call may be AI-assisted. Is that okay?</p><p><b>Customer</b> Yes. Can I split my purchase into three payments?</p></div><div class="input-row"><input id="utterance" placeholder="Type the customer’s latest words"><button id="speak">🎙 Speak</button><button class="primary" id="analyse">Analyse</button></div><div class="scenarios"><button data-scenario="What documents do I need for KYC?">KYC question</button><button data-scenario="I will decide later.">Hesitation</button><button data-scenario="How do I complete onboarding?">Ready to onboard</button></div></article>
+          <article class="card"><h2>Nyx guidance</h2><div id="guidance" class="guidance"></div><div class="product"><small>Approved product summary</small><strong>Pay in 3 · zero-cost EMI</strong><p>Only surface current approved terms. Final credit decisions remain human-owned.</p></div></article>
+        </div>
+        <div class="metrics"><div class="card"><small>Consent captured</small><b>Yes</b></div><div class="card"><small>Detected intent</small><b id="intent">Explore</b></div><div class="card"><small>Routine decision cost</small><b>₹0.08</b></div></div>
+        <article class="card"><h2>Close the loop</h2><div id="crm" class="draft">CRM draft: Product exploration, consent captured, offer approved eligibility flow.</div><button class="primary" id="save">Save CRM activity</button><button id="follow-up">Draft follow-up</button></article>
+      </section>
+
+      <section id="reviews" class="view"><h2>Call reviews</h2><div class="card list"><p><b>Ananya Rao</b><span>Consent captured · product exploration</span><em>92% ready</em></p><p><b>Rahul Mehta</b><span>KYC question · agent review needed</span><em>Review</em></p><p><b>Priya Iyer</b><span>Hesitation · follow-up drafted</span><em>88% ready</em></p></div></section>
+      <section id="followups" class="view"><h2>Follow-up queue</h2><div class="card list"><p><b>Ananya Rao</b><span>Product summary and secure eligibility link</span><em>Agent review</em></p><p><b>Priya Iyer</b><span>Decision reminder scheduled tomorrow</span><em>Pending</em></p></div></section>
+      <section id="knowledge" class="view"><h2>Approved knowledge</h2><div class="card list"><p><b>Pay-in-3 overview</b><span>Current product-owner content</span><em>Verified</em></p><p><b>KYC and onboarding</b><span>Use the secure approved checklist</span><em>Verified</em></p><p><b>Eligibility policy</b><span>Final decisions only in authorised flow</span><em>Restricted</em></p></div></section>
+      <section id="activity" class="view"><h2>CRM activity</h2><div class="card list"><p><b>Call: Ananya Rao</b><span>Consent captured · eligibility flow recommended</span><em>Draft</em></p><p><b>Knowledge retrieval</b><span>Current Pay-in-3 overview used</span><em>Audited</em></p></div></section>
+      <section id="workflow" class="view"><h2>Cooperating AI workflow</h2><p>Specialised, low-cost agents complete one narrow task each before handing off to the next.</p><div class="card"><div class="input-row"><input id="workflow-input" value="What documents do I need for KYC?"><button class="primary" id="run-workflow">Run workflow</button></div><ol id="agent-trace"><li>Consent and privacy agent</li><li>Intent router</li><li>Knowledge retrieval agent</li><li>Response and safety agent</li><li>Business-goal self-check</li></ol><div id="workflow-result" class="draft">Awaiting input.</div></div></section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
