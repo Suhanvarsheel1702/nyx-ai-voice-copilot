@@ -4,7 +4,7 @@ Nyx is a zero-backend MVP for the pay-in-3, zero-cost EMI affordability use case
 
 ## Demo
 
-Open [`outputs/pay-in-3-voice-copilot.html`](outputs/pay-in-3-voice-copilot.html) in Chrome or Edge.
+Open [`pay-in-3-voice-copilot.html`](pay-in-3-voice-copilot.html) in Chrome or Edge.
 
 ## What it does
 
@@ -53,7 +53,7 @@ flowchart TB
 No installation or server is required.
 
 1. Clone the repository.
-2. Open `outputs/pulse-ai-copilot.html` in a current Chrome or Edge browser.
+2. Open `pay-in-3-voice-copilot.html` in a current Chrome or Edge browser.
 3. Try one of the sample customer scenarios, type an utterance, or select **Speak** and grant microphone permission.
 4. Review the guidance, complete the onboarding checklist, and save the simulated CRM activity.
 
