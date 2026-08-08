@@ -80,8 +80,22 @@ $('#run-quality').addEventListener('click', async () => {
 });
 $('#speak').addEventListener('click', () => {
   const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!Speech) return showGuidance('What documents do I need for KYC?');
-  const recognizer = new Speech(); recognizer.lang = 'en-IN'; recognizer.onresult = event => showGuidance(event.results[0][0].transcript); recognizer.start();
+  if (!Speech) {
+    $('#utterance').value = 'What documents do I need for KYC?';
+    return;
+  }
+  const recognizer = new Speech();
+  recognizer.lang = 'en-IN';
+  recognizer.interimResults = true;
+  recognizer.onstart = () => { $('#speak').textContent = 'Listening…'; };
+  recognizer.onresult = event => {
+    let transcriptText = '';
+    for (let index = event.resultIndex; index < event.results.length; index += 1) transcriptText += event.results[index][0].transcript;
+    $('#utterance').value = transcriptText.trim();
+  };
+  recognizer.onerror = () => { $('#speak').textContent = '🎙 Speak'; };
+  recognizer.onend = () => { $('#speak').textContent = '🎙 Speak'; $('#utterance').focus(); };
+  recognizer.start();
 });
 $('#run-workflow').addEventListener('click', async () => {
   const question = $('#workflow-input').value;
