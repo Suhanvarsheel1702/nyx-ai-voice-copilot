@@ -3,7 +3,14 @@ const guidance = $('#guidance');
 const transcript = $('#transcript');
 let latestIntent = 'Explore';
 
-function showGuidance(text) {
+async function api(path, method = 'GET', body) {
+  try {
+    const response = await fetch(path, { method, headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    return response.ok ? response.json() : null;
+  } catch { return null; }
+}
+
+async function showGuidance(text) {
   const lower = text.toLowerCase();
   let intent = 'Explore';
   let reply = 'Pay-in-3 lets eligible customers divide a purchase into three scheduled payments. I can guide you through the secure eligibility and onboarding steps.';
@@ -21,6 +28,13 @@ function showGuidance(text) {
     intent = 'Ready';
     reply = 'I can help you start the eligibility and onboarding journey. Final decisions and terms are shown only in the approved flow.';
     action = 'Guide the customer to the approved eligibility flow.';
+  }
+
+  const remote = await api('/api/copilot/analyze', 'POST', { utterance: text, consent: true });
+  if (remote) {
+    intent = remote.intent;
+    reply = remote.suggestedResponse;
+    action = remote.nextBestAction;
   }
 
   $('#intent').textContent = intent;
@@ -44,9 +58,12 @@ document.querySelectorAll('.nav-item').forEach(button => button.addEventListener
 document.querySelectorAll('[data-scenario]').forEach(button => button.addEventListener('click', () => showGuidance(button.dataset.scenario)));
 $('#analyse').addEventListener('click', analyseInput);
 $('#utterance').addEventListener('keydown', event => { if (event.key === 'Enter') analyseInput(); });
-$('#save').addEventListener('click', () => { $('#crm').textContent = 'CRM activity saved. Consent, intent, and the agent-recommended next step are recorded.'; });
+$('#save').addEventListener('click', async () => {
+  const activity = await api('/api/crm-activities', 'POST', { consent: true, intent: latestIntent, summary: $('#crm').textContent });
+  $('#crm').textContent = activity ? `CRM activity ${activity.id} saved with consent and intent.` : 'CRM activity saved locally. Start the local backend to persist it.';
+});
 $('#follow-up').addEventListener('click', () => { $('#crm').textContent = 'Follow-up draft: Thank you for speaking with us. Here is the approved Pay-in-3 summary and secure eligibility next step.'; });
-$('#run-quality').addEventListener('click', () => {
+$('#run-quality').addEventListener('click', async () => {
   const checks = [
     ['Consent recorded', true, 'Customer agreed to AI-assisted support.'],
     ['Approved knowledge used', true, 'Product and KYC guidance is source-grounded.'],
@@ -54,10 +71,11 @@ $('#run-quality').addEventListener('click', () => {
     ['Next-best action present', latestIntent !== 'Explore', latestIntent === 'Explore' ? 'Ask the agent to confirm the customer’s next step.' : `Next step is aligned to ${latestIntent.toLowerCase()} intent.`],
     ['CRM hand-off ready', true, 'Draft contains consent, intent, and follow-up context.']
   ];
+  const remote = await api('/api/quality-check', 'POST', { consent: true, sources: ['product-overview'], nextBestAction: latestIntent !== 'Explore', crmDraft: $('#crm').textContent });
   const passed = checks.filter(([, ok]) => ok).length;
-  const score = Math.round((passed / checks.length) * 100);
+  const score = remote ? remote.score : Math.round((passed / checks.length) * 100);
   $('#quality-score').textContent = `${score}%`;
-  $('#quality-status').textContent = score === 100 ? 'Ready to save' : 'Agent review';
+  $('#quality-status').textContent = remote ? remote.recommendation : (score === 100 ? 'Ready to save' : 'Agent review');
   $('#quality-checks').innerHTML = checks.map(([name, ok, note]) => `<div class="quality-check ${ok ? 'pass' : 'review'}"><div><b>${ok ? '✓' : '!'} ${name}</b><br><small>${note}</small></div><em>${ok ? 'Pass' : 'Review'}</em></div>`).join('');
 });
 $('#speak').addEventListener('click', () => {

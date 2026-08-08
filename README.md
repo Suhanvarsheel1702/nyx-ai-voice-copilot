@@ -4,7 +4,7 @@ Nyx is a zero-backend MVP for the pay-in-3, zero-cost EMI affordability use case
 
 ## Demo
 
-Open [`pay-in-3-voice-copilot.html`](pay-in-3-voice-copilot.html) in Chrome or Edge.
+Open [`outputs/pay-in-3-voice-copilot.html`](outputs/pay-in-3-voice-copilot.html) in Chrome or Edge.
 
 ## What it does
 
@@ -50,12 +50,16 @@ flowchart TB
 
 ## Run locally
 
-No installation or server is required.
+The front end can open directly, but the full MVP uses the local API.
 
-1. Clone the repository.
-2. Open `pay-in-3-voice-copilot.html` in a current Chrome or Edge browser.
-3. Try one of the sample customer scenarios, type an utterance, or select **Speak** and grant microphone permission.
-4. Review the guidance, complete the onboarding checklist, and save the simulated CRM activity.
+1. Clone the repository and install Node.js 18+.
+2. Run `npm start`.
+3. Open `http://localhost:3000` in Chrome or Edge.
+4. Try a customer scenario, save a CRM activity, and run the quality scorecard.
+
+### Local API
+
+`server.js` provides dependency-free mock endpoints for copilot analysis, approved knowledge, CRM activities, quality checks, audit logs, and cost tracking. Run `npm test` to execute the API smoke test.
 
 ## Voice support
 

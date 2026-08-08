@@ -1,0 +1,10 @@
+{
+  "name": "nyx-ai-voice-copilot",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Local full-stack MVP for the Nyx inside-sales voice co-pilot.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node api-smoke-test.js"
+  }
+}
