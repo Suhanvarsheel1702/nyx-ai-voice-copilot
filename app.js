@@ -1,6 +1,7 @@
 const $ = selector => document.querySelector(selector);
 const guidance = $('#guidance');
 const transcript = $('#transcript');
+let latestIntent = 'Explore';
 
 function showGuidance(text) {
   const lower = text.toLowerCase();
@@ -23,6 +24,7 @@ function showGuidance(text) {
   }
 
   $('#intent').textContent = intent;
+  latestIntent = intent;
   guidance.innerHTML = `<div><b>Intent: ${intent}</b><br><small>Detected from the latest customer utterance.</small></div><div><b>Suggested response</b><br>${reply}</div><div><b>Next best action</b><br>${action}</div>`;
   transcript.insertAdjacentHTML('beforeend', `<p><b>Customer</b>${text}</p><p class="agent"><b>Nyx suggestion</b>${reply}</p>`);
   transcript.scrollTop = transcript.scrollHeight;
@@ -44,6 +46,20 @@ $('#analyse').addEventListener('click', analyseInput);
 $('#utterance').addEventListener('keydown', event => { if (event.key === 'Enter') analyseInput(); });
 $('#save').addEventListener('click', () => { $('#crm').textContent = 'CRM activity saved. Consent, intent, and the agent-recommended next step are recorded.'; });
 $('#follow-up').addEventListener('click', () => { $('#crm').textContent = 'Follow-up draft: Thank you for speaking with us. Here is the approved Pay-in-3 summary and secure eligibility next step.'; });
+$('#run-quality').addEventListener('click', () => {
+  const checks = [
+    ['Consent recorded', true, 'Customer agreed to AI-assisted support.'],
+    ['Approved knowledge used', true, 'Product and KYC guidance is source-grounded.'],
+    ['No credit promise', true, 'Final eligibility, limits, and terms remain in the authorised flow.'],
+    ['Next-best action present', latestIntent !== 'Explore', latestIntent === 'Explore' ? 'Ask the agent to confirm the customer’s next step.' : `Next step is aligned to ${latestIntent.toLowerCase()} intent.`],
+    ['CRM hand-off ready', true, 'Draft contains consent, intent, and follow-up context.']
+  ];
+  const passed = checks.filter(([, ok]) => ok).length;
+  const score = Math.round((passed / checks.length) * 100);
+  $('#quality-score').textContent = `${score}%`;
+  $('#quality-status').textContent = score === 100 ? 'Ready to save' : 'Agent review';
+  $('#quality-checks').innerHTML = checks.map(([name, ok, note]) => `<div class="quality-check ${ok ? 'pass' : 'review'}"><div><b>${ok ? '✓' : '!'} ${name}</b><br><small>${note}</small></div><em>${ok ? 'Pass' : 'Review'}</em></div>`).join('');
+});
 $('#speak').addEventListener('click', () => {
   const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!Speech) return showGuidance('What documents do I need for KYC?');

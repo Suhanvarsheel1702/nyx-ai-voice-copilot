@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nyx — AI Voice Co-Pilot</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="quality.css">
 </head>
 <body>
   <div class="app-shell">
@@ -17,6 +18,7 @@
         <button class="nav-item" data-view="followups">Follow-ups</button>
         <button class="nav-item" data-view="knowledge">Knowledge base</button>
         <button class="nav-item" data-view="activity">CRM activity</button>
+        <button class="nav-item" data-view="quality">Call quality</button>
         <button class="nav-item" data-view="workflow">AI workflow</button>
       </nav>
     </aside>
@@ -41,6 +43,7 @@
       <section id="followups" class="view"><h2>Follow-up queue</h2><div class="card list"><p><b>Ananya Rao</b><span>Product summary and secure eligibility link</span><em>Agent review</em></p><p><b>Priya Iyer</b><span>Decision reminder scheduled tomorrow</span><em>Pending</em></p></div></section>
       <section id="knowledge" class="view"><h2>Approved knowledge</h2><div class="card list"><p><b>Pay-in-3 overview</b><span>Current product-owner content</span><em>Verified</em></p><p><b>KYC and onboarding</b><span>Use the secure approved checklist</span><em>Verified</em></p><p><b>Eligibility policy</b><span>Final decisions only in authorised flow</span><em>Restricted</em></p></div></section>
       <section id="activity" class="view"><h2>CRM activity</h2><div class="card list"><p><b>Call: Ananya Rao</b><span>Consent captured · eligibility flow recommended</span><em>Draft</em></p><p><b>Knowledge retrieval</b><span>Current Pay-in-3 overview used</span><em>Audited</em></p></div></section>
+      <section id="quality" class="view"><h2>Call quality scorecard</h2><p>Nyx evaluates the current call against business goals before anything is saved or sent.</p><div class="metrics"><div class="card"><small>Readiness score</small><b id="quality-score">--</b></div><div class="card"><small>Recommendation</small><b id="quality-status">Run check</b></div><div class="card"><small>Decision cost</small><b>₹0.08</b></div></div><article class="card"><h2>Business-goal self-check</h2><div id="quality-checks" class="check-list"></div><button class="primary" id="run-quality">Run quality check</button></article></section>
       <section id="workflow" class="view"><h2>Cooperating AI workflow</h2><p>Specialised, low-cost agents complete one narrow task each before handing off to the next.</p><div class="card"><div class="input-row"><input id="workflow-input" value="What documents do I need for KYC?"><button class="primary" id="run-workflow">Run workflow</button></div><ol id="agent-trace"><li>Consent and privacy agent</li><li>Intent router</li><li>Knowledge retrieval agent</li><li>Response and safety agent</li><li>Business-goal self-check</li></ol><div id="workflow-result" class="draft">Awaiting input.</div></div></section>
     </main>
   </div>

@@ -1,0 +1,14 @@
+.check-list { display: grid; gap: 9px; margin: 14px 0; }
+
+.quality-check {
+  align-items: center;
+  background: #f5f7fb;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.quality-check.pass { border-left: 4px solid #0da18f; }
+.quality-check.review { border-left: 4px solid #f59e0b; }
