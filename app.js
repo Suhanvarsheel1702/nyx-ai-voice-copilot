@@ -54,6 +54,7 @@ document.querySelectorAll('.nav-item').forEach(button => button.addEventListener
   document.querySelectorAll('.nav-item,.view').forEach(item => item.classList.remove('active'));
   button.classList.add('active');
   $(`#${button.dataset.view}`).classList.add('active');
+  if (button.dataset.view === 'admin') loadAuditWorkspace();
 }));
 document.querySelectorAll('[data-scenario]').forEach(button => button.addEventListener('click', () => showGuidance(button.dataset.scenario)));
 $('#analyse').addEventListener('click', analyseInput);
@@ -78,6 +79,18 @@ $('#run-quality').addEventListener('click', async () => {
   $('#quality-status').textContent = remote ? remote.recommendation : (score === 100 ? 'Ready to save' : 'Agent review');
   $('#quality-checks').innerHTML = checks.map(([name, ok, note]) => `<div class="quality-check ${ok ? 'pass' : 'review'}"><div><b>${ok ? '✓' : '!'} ${name}</b><br><small>${note}</small></div><em>${ok ? 'Pass' : 'Review'}</em></div>`).join('');
 });
+async function loadAuditWorkspace() {
+  const [audit, costs, activities] = await Promise.all([api('/api/audit-log'), api('/api/costs'), api('/api/crm-activities')]);
+  const events = audit?.items || [];
+  const crm = activities?.items || [];
+  $('#audit-events').textContent = events.filter(item => item.details?.selfCheck?.consentPresent !== false).length;
+  $('#audit-crm').textContent = crm.length;
+  $('#audit-cost').textContent = `₹${(costs?.totalInr || 0).toFixed(2)}`;
+  $('#audit-log').innerHTML = events.length
+    ? events.slice(0, 8).map(item => `<div class="audit-item"><b>${item.event}</b><small>${new Date(item.createdAt).toLocaleString()}</small><br><small>${JSON.stringify(item.details)}</small></div>`).join('')
+    : '<p>No audit events yet. Analyse a customer utterance to create one.</p>';
+}
+$('#refresh-audit').addEventListener('click', loadAuditWorkspace);
 $('#speak').addEventListener('click', () => {
   const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!Speech) {

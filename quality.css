@@ -12,3 +12,8 @@
 
 .quality-check.pass { border-left: 4px solid #0da18f; }
 .quality-check.review { border-left: 4px solid #f59e0b; }
+
+.audit-heading { align-items: center; display: flex; gap: 12px; justify-content: space-between; }
+.audit-log { display: grid; gap: 8px; margin-top: 14px; }
+.audit-item { background: #f5f7fb; border-left: 4px solid #655cff; border-radius: 8px; padding: 10px; }
+.audit-item b { display: block; }
