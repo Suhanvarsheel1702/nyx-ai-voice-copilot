@@ -87,7 +87,11 @@ async function loadAuditWorkspace() {
   $('#audit-crm').textContent = crm.length;
   $('#audit-cost').textContent = `₹${(costs?.totalInr || 0).toFixed(2)}`;
   $('#audit-log').innerHTML = events.length
-    ? events.slice(0, 8).map(item => `<div class="audit-item"><b>${item.event}</b><small>${new Date(item.createdAt).toLocaleString()}</small><br><small>${JSON.stringify(item.details)}</small></div>`).join('')
+    ? events.slice(0, 8).map(item => {
+      const title = item.event || item.action || 'Audit event';
+      const detail = item.details ? JSON.stringify(item.details) : (item.outcome || 'Recorded');
+      return `<div class="audit-item"><b>${title}</b><small>${new Date(item.createdAt).toLocaleString()}</small><br><small>${detail}</small></div>`;
+    }).join('')
     : '<p>No audit events yet. Analyse a customer utterance to create one.</p>';
 }
 $('#refresh-audit').addEventListener('click', loadAuditWorkspace);
